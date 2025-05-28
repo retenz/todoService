@@ -24,14 +24,14 @@ class TodoServiceTest {
     @Test
     public void updateWithNullId() {
         TodoTask todoTask = new TodoTask();
-        assertThrows(IllegalArgumentException.class, () -> todoService.updateTodoTask(todoTask));
+        assertThrows(ServiceException.class, () -> todoService.updateTodoTask(todoTask));
     }
 
     @Test
     public void updateWithNotExistId() {
         TodoTask todoTask = new TodoTask();
         todoTask.setId(-1L);
-        assertThrows(EntityNotFoundException.class, () -> todoService.updateTodoTask(todoTask));
+        assertThrows(ServiceException.class, () -> todoService.updateTodoTask(todoTask));
     }
 
     @Test
