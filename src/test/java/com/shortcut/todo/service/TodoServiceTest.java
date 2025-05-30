@@ -3,7 +3,6 @@ package com.shortcut.todo.service;
 import com.shortcut.todo.dao.TodoTaskDao;
 import com.shortcut.todo.entity.TodoTask;
 import com.shortcut.todo.exception.ServiceException;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
