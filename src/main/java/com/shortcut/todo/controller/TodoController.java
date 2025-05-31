@@ -8,14 +8,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping(value = "/todo", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -24,21 +27,21 @@ public class TodoController {
 
     @Tag(name = "post", description = "POST-методы сервиса")
     @PostMapping("/create")
-    public TodoTask createTodoTask(@ModelAttribute TodoTask todoTask) {
+    public TodoTask createTodoTask(@RequestBody TodoTask todoTask) {
         return todoService.createTodoTask(todoTask);
     }
 
     @Tag(name = "get", description = "GET-методы сервиса")
     @GetMapping("/get/{id}")
-    public TodoTask getTodoTaskById(@PathVariable Long id) {
+    public Optional<TodoTask> getTodoTaskById(@PathVariable Long id) {
         return todoService.getTodoTaskById(id);
     }
 
 
     @Tag(name = "post", description = "POST-методы сервиса")
     @PostMapping("/list")
-    public List<TodoTask> getTodoTasks(@ModelAttribute TodoTaskFilter todoTaskFilter) {
-        return todoService.getTodoTasks(todoTaskFilter);
+    public List<TodoTask> getTodoTasks(@RequestBody TodoTaskFilter todoTaskFilter) {
+        return todoService.getTodoTasks(todoTaskFilter).toList();
     }
 
     @ApiResponses ({
@@ -46,12 +49,16 @@ public class TodoController {
     })
     @Tag(name = "post", description = "POST-методы сервиса")
     @PostMapping("/update")
-    public ResponseEntity<?> updateTodoTask(@ModelAttribute TodoTask todoTask) throws ServiceException {
-            return new ResponseEntity<>(todoService.updateTodoTask(todoTask), OK);
+    public ResponseEntity<?> updateTodoTask(@Valid @RequestBody TodoTask todoTask, BindingResult result) throws ServiceException {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(result.getAllErrors());
+        }
+
+        return ResponseEntity.ok(todoService.updateTodoTask(todoTask));
     }
 
     @Tag(name = "post", description = "POST-методы сервиса")
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteTodoTask(@PathVariable Long id) throws ServiceException {
         todoService.deleteTodoTaskById(id);
     }

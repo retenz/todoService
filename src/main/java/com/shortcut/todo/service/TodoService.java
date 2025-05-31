@@ -1,22 +1,20 @@
 package com.shortcut.todo.service;
 
 import com.shortcut.todo.dao.TodoTaskDao;
+import com.shortcut.todo.entity.ClsTaskStatus;
 import com.shortcut.todo.entity.TodoTask;
 import com.shortcut.todo.entity.filter.TodoTaskFilter;
 import com.shortcut.todo.exception.ServiceException;
 import jakarta.annotation.Resource;
-//import lombok.extern.log4j.Log4j2;
-//import lombok.extern.slf4j.Slf4j;
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @Log4j2
@@ -29,23 +27,24 @@ public class TodoService {
         return todoTaskDao.save(todoTask);
     }
 
-    public TodoTask getTodoTaskById(Long id) {
+    public Optional<TodoTask> getTodoTaskById(Long id) {
         if (id == null) {
             log.warn("Задачи с id = {} не найдено", id);
             throw new IllegalArgumentException("ID задачи не может быть null");
         }
 
         log.info("Получение задачи по id = {}", id);
-        return todoTaskDao.findById(id).orElse(null);
+        return todoTaskDao.findById(id);
     }
 
-    public List<TodoTask> getTodoTasks(TodoTaskFilter todoTaskFilter) {
-        List<TodoTask> todoTasks;
+    public Page<TodoTask> getTodoTasks(TodoTaskFilter todoTaskFilter) {
+        Page<TodoTask> todoTasks;
         Pageable pageRequest = buildPageRequest(todoTaskFilter);
+        ClsTaskStatus taskStatus = todoTaskFilter.getTaskStatus();
 
-        if (todoTaskFilter.getTaskStatusId() != null) {
-            log.info("Получение списка задач с statusId = {}", todoTaskFilter.getTaskStatusId());
-            todoTasks = todoTaskDao.findAllByClsTaskStatusId(todoTaskFilter.getTaskStatusId(), pageRequest);
+        if (taskStatus != null) {
+            log.info("Получение списка задач с statusId = {} name = {}", taskStatus.getId(), taskStatus.getName());
+            todoTasks = todoTaskDao.findAllByClsTaskStatus(taskStatus, pageRequest);
         } else {
             log.info("Получение всего списка задач");
             todoTasks = todoTaskDao.findAll(pageRequest);

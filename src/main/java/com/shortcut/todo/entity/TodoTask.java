@@ -1,5 +1,6 @@
 package com.shortcut.todo.entity;
 
+import com.shortcut.todo.entity.validator.annotation.ValidTaskStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -35,6 +36,7 @@ public class TodoTask {
 
     @ManyToOne
     @JoinColumn(name = "CTS_ID")
+    @ValidTaskStatus
     @Schema(description = "Текущий статус задачи")
     private ClsTaskStatus clsTaskStatus;
 

@@ -22,14 +22,12 @@
     </Appenders>
 
     <Loggers>
-        <!-- Логирование для вашего приложения -->
         <Logger name="com.shortcut.todo" level="DEBUG" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
         </Logger>
 
-        <!-- Логирование для Spring (можно уменьшить уровень) -->
-        <Logger name="org.springframework" level="DEBUG"/>
+        <Logger name="org.springframework" level="WARN"/>
 
         <Root level="WARN">
             <AppenderRef ref="Console"/>
