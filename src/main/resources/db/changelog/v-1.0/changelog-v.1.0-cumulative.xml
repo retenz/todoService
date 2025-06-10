@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <include file="changes/10-06-2025-add-table-cls_task_status.xml" relativeToChangelogFile="true"/>
+    <include file="changes/10-06-2025-add-table-todo_task.xml" relativeToChangelogFile="true"/>
+    <include file="changes/10-06-2025-insert-cls_task_status.xml" relativeToChangelogFile="true"/>
+    <include file="changes/10-06-2025-insert-todo-task.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>

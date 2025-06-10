@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="add-table-todo_task" author="r.tenadze">
+        <createTable tableName="todo_task">
+            <column name="t_id" type="bigint" autoIncrement="true" remarks="primary key">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="t_name" type="varchar(200)" remarks="Название задачи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="t_description" type="text" remarks="Описание задачи">
+                <constraints nullable="true"/>
+            </column>
+            <column name="cts_id" type="int" remarks="Статус выполнения">
+                <constraints nullable="false" foreignKeyName="F_CTS_ID"
+                             referencedTableName="cls_task_status" referencedColumnNames="cts_id"/>
+            </column>
+            <column name="t_create_date" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP" remarks="Дата создания">
+                <constraints nullable="false"/>
+            </column>
+            <column name="t_update_date" type="timestamp" remarks="Дата обновления">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

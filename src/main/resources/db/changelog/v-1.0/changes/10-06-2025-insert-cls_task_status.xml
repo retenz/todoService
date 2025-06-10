@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="insert-cls_task_status" author="r.tenadze">
+        <insert tableName="cls_task_status">
+            <column name="cts_id" value="1"/>
+            <column name="cts_name" value="Новая"/>
+        </insert>
+        <insert tableName="cls_task_status">
+            <column name="cts_id" value="2"/>
+            <column name="cts_name" value="В процессе"/>
+        </insert>
+        <insert tableName="cls_task_status">
+            <column name="cts_id" value="3"/>
+            <column name="cts_name" value="Завершена"/>
+        </insert>
+        <rollback>
+            DELETE FROM cls_task_status
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
